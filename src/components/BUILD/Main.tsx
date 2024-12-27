@@ -140,8 +140,8 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
                  
                 <div className="flex w-full bg-[#FFFFFF] mt-12">
                 
-< div className="w-1/2  bg-[#002F40] flex items-center justify-center relative" style={{ padding: '8vh', aspectRatio: '1.7' }}>
-    <ReactPlayer key={playerKey}  url={playingURL}  className="react-player" light = {true} width="100%" height="100%" controls  
+                < div className="w-1/2  bg-[#002F40] flex items-center justify-center relative" style={{ padding: '5vh', aspectRatio: '1.7' }}>
+                <ReactPlayer key={playerKey}  url={playingURL}  className="react-player" light = {true} width="100%" height="100%" controls  
     ref={playerRef}/>    </div>
     <div className="w-1/2 flex flex-col items-center justify-center p-8 bg-[#FFFFFF]">
                         <h1 className="text-6xl font-bold text-center text-black mb-5" style={{ fontFamily: "Cormorant Infant, serif", fontWeight: "700" }}>FAQs</h1>
@@ -157,47 +157,46 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
       }}>Use the timestamps below to navigate to the questions of your choice:</p>
                         <div className="flex flex-col item-center space-y-3">
                         <div className="flex flex-wrap justify-center space-x-4">
-    {profile?.question
-      ?.slice(0, profile.question.findIndex((q) => q.includes("!!"))) // Questions before "!!"
-      .map((question, index) => (
-        <React.Fragment key={index}>
-          <a
-            href={`#${question.toLowerCase()}`}
-            onClick={(e) => handleQuestionClick(index, e)}
-            onMouseEnter={(e) => handleMouseEnter(index, e)}
-            onMouseLeave={handleMouseLeave}
-            className="text-black text-2xl font-medium underline"
-          >
-            Q{index + 1}
-          </a>
-          {index <
-            profile.question.findIndex((q) => q.includes("!!")) - 1 && (
-            <span className="text-black text-xl">|</span>
-          )}
-        </React.Fragment>
-      ))}
-  </div>
-  <div className="flex flex-wrap justify-center space-x-4">
-    {profile?.question
-      ?.slice(profile.question.findIndex((q) => q.includes("!!")) + 1) // Questions after "!!"
-      .map((question, index) => (
-        <React.Fragment key={index}>
-          <a
-            href={`#${question.toLowerCase()}`}
-            onClick={(e) => handleQuestionClick(index, e)}
-            onMouseEnter={(e) => handleMouseEnter(index, e)}
-            onMouseLeave={handleMouseLeave}
-            className="text-black text-2xl font-medium underline"
-          >
-            Q{index + 1 + profile.question.findIndex((q) => q.includes("!!"))}
-          </a>
-          {index <
-            profile.question.length -
-              profile.question.findIndex((q) => q.includes("!!")) -
-              2 && <span className="text-black text-xl">|</span>}
-        </React.Fragment>
-      ))}
-  </div>
+  {profile?.question?.slice(0, profile.question.findIndex((q) => q.includes("!!"))) // Questions before "!!"
+    .map((question, index) => (
+      <React.Fragment key={index}>
+        <a
+          href={`#${question.toLowerCase()}`}
+          onClick={(e) => handleQuestionClick(index, e)}
+          onMouseEnter={(e) => handleMouseEnter(index, e)}
+          onMouseLeave={handleMouseLeave}
+          className="text-black text-2xl font-medium underline"
+        >
+          Q{index + 1}
+        </a>
+        {index < profile.question.findIndex((q) => q.includes("!!")) - 1 && (
+          <span className="text-black text-xl">|</span>
+        )}
+      </React.Fragment>
+    ))}
+</div>
+
+<div className="flex flex-wrap justify-center space-x-4">
+  {profile?.question
+    ?.slice(profile.question.findIndex((q) => q.includes("!!")) + 1) // Questions after "!!"
+    .map((question, index) => (
+      <React.Fragment key={index}>
+        <a
+          href={`#${question.toLowerCase()}`}
+          onClick={(e) => handleQuestionClick(index + profile.question.findIndex((q) => q.includes("!!")) + 1, e)} // Adjust the index to continue from where the first part ended
+          onMouseEnter={(e) => handleMouseEnter(index + profile.question.findIndex((q) => q.includes("!!")) + 1, e)} // Adjust the index for mouse enter
+          onMouseLeave={handleMouseLeave}
+          className="text-black text-2xl font-medium underline"
+        >
+          Q{index + profile.question.findIndex((q) => q.includes("!!")) + 1} {/* Adjust the question numbering */}
+        </a>
+        {index < profile.question.length - profile.question.findIndex((q) => q.includes("!!")) - 2 && (
+          <span className="text-black text-xl">|</span>
+        )}
+      </React.Fragment>
+    ))}
+</div>
+
 </div>
 
                         {hoveredQuestion && (
@@ -245,14 +244,15 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
     </p>
 </div>
 
-< div className="w-1/2  bg-[#002F40] flex items-center justify-center relative" style={{ padding: '8vh', aspectRatio: '1.7' }}>
+< div className="w-1/2  bg-[#002F40] flex items-center justify-center relative" style={{ padding: '5vh', aspectRatio: '1.7' }}>
+ 
     <ReactPlayer
     url={profile?.videoLinks?.[1] || ""} // Access videoLinks[1] for embedded YouTube link
     className="react-player"
     width="100%"
     height="100%"
     controls
-     // Automatically play the video when the component renders
+    // Automatically play the video when the component renders
   />
        
     </div>
