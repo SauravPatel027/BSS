@@ -1,4 +1,4 @@
-import React, {useState} from "react";  
+import React, {useState, useEffect} from "react";  
 import ReactPlayer from "react-player";
 
 import profileData from "../../assets/profiles.json";
@@ -6,14 +6,15 @@ import profileData from "../../assets/profiles.json";
 const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {  
     const profile = profileData[profileName as keyof typeof profileData];
     const [hoveredQuestion, setHoveredQuestion] = useState<string | null>(null);
-    const [autoPlay, setAutoPlay] = useState<boolean>(false);
     const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-   
+    const [questionClicked, setQuestionClicked] = useState<boolean>(false); // Track if a question was clicked
+
     const [playerKey, setPlayerKey] = useState<number>(0);
     const [playingURL, setPlayingURL] = useState<string>(
       profile?.videoLinks?.[0] || ""
   );
-  
+  const playerRef = React.useRef<ReactPlayer | null>(null);  // Create a reference for ReactPlayer
+
     const curveHeight = 300;  
     const middle = 150;  
     const amplitude = 25;
@@ -26,8 +27,16 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
     const mapToPercentage = (x: number): number => ((x - startX) / (endX - startX)) * 100;
 
     const calculateY = (x: number): number => middle - amplitude * Math.sin(x);
+    const formatTooltipText = (text: string) =>
+      text.split("!!").map((line, index) => (
+        <React.Fragment key={index}>
+          <span style={{ whiteSpace: "nowrap" }}>{line.trim()}</span>
+          {index < text.split("!!").length - 1 && <br />}
+        </React.Fragment>
+      ));
     const handleMouseEnter = (index: number, event: React.MouseEvent) => {
       setHoveredQuestion(profile?.questions?.[index] || "");
+      
     
       // Positioning the tooltip dynamically
       setTooltipPosition({
@@ -38,8 +47,34 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
     const handleMouseLeave = () => {
       setHoveredQuestion(null); // Clear hovered question text
     };    
-    const handleQuestionClick = (iddd: number, event: React.MouseEvent) => { event.preventDefault(); setPlayingURL(profile.timestamps[iddd]);  setPlayerKey(prevKey => prevKey + 1); setAutoPlay(true); const originalScrollTo = window.scrollTo; window.scrollTo = () => {}; setTimeout(() => { window.scrollTo = originalScrollTo; }, 1); };
- 
+    const handleQuestionClick = (iddd: number, event: React.MouseEvent) => {
+      event.preventDefault();
+      const timestamp = parseFloat(profile.timestamps[iddd]);  // Get timestamp in seconds
+      setQuestionClicked(true); // Mark question as clicked
+  
+      // Temporarily disable scroll behavior
+      const originalScrollTo = window.scrollTo;
+      window.scrollTo = () => {}; // Prevent scroll to top
+      setTimeout(() => {
+          window.scrollTo = originalScrollTo; // Restore scroll behavior after 1ms
+      }, 1);
+  
+      // Seek to the timestamp and play the video
+      if (playerRef.current) {
+          playerRef.current.seekTo(timestamp);  // Seek to the timestamp (in seconds)
+          playerRef.current.getInternalPlayer().play();  // Start playing the video
+
+      }
+  };
+  
+  // Example usage of `questionClicked` for conditional rendering or logic
+  {questionClicked && <div>Question was clicked!</div>}
+  
+  useEffect(() => {
+    // Reset player key and URL when profile changes
+    setPlayerKey(prevKey => prevKey + 1);
+    setPlayingURL(profile?.videoLinks?.[0] || "");
+}, [profileName]);
     const arrows = [  
         ...downwardArrowPositions.map((x, index) => ({  
             positionX: `${mapToPercentage(x)}%`,  
@@ -106,7 +141,8 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
                 <div className="flex w-full bg-[#FFFFFF] mt-12">
                 
     <div className="w-1/2 min-h-[300px] bg-[#002F40] p-8 flex items-center justify-center">
-    <ReactPlayer key={playerKey}  url={playingURL}  className="react-player" width="90%" height="95%" controls  playing={autoPlay}/>    </div>
+    <ReactPlayer key={playerKey}  url={playingURL}  className="react-player" light = {true} width="90%" height="95%" controls  
+    ref={playerRef}/>    </div>
     <div className="w-1/2 flex flex-col items-center justify-center p-8 bg-[#FFFFFF]">
                         <h1 className="text-6xl font-bold text-center text-black mb-5" style={{ fontFamily: "Cormorant Infant, serif", fontWeight: "700" }}>FAQs</h1>
                         <p className="text-2xl text-center text-black" style={{
@@ -119,29 +155,49 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
         fontWeight: "normal",
         marginBottom: "50px", // Increased space
       }}>Use the timestamps below to navigate to the questions of your choice:</p>
-                        <div className="flex flex-wrap space-x-4">
-  {profile?.question?.map((question, index) => {
-    const shouldBreakLine = question.includes("!!"); // Check if the question contains "!!"
-    
-    return (
-      <React.Fragment key={index}>
-        {/* Displaying the question number */}
-        <a
-          href={`#${question.toLowerCase()}`}
-          onClick={(e) => handleQuestionClick(index, e)}
-          onMouseEnter={(e) => handleMouseEnter(index, e)}
-          onMouseLeave={handleMouseLeave}
-          className="text-black text-2xl font-medium underline"        >
-          Q{index + 1}
-        </a>
-        {/* Add a separator if it's not the last question */}
-        {index < profile.question.length - 1 && <span className="text-black text-xl">|</span>}
-
-        {/* Add a line break if the question contains "!!" */}
-        {shouldBreakLine && <br />}
-      </React.Fragment>
-    );
-  })}
+                        <div className="flex flex-col item-center space-y-3">
+                        <div className="flex flex-wrap justify-center space-x-4">
+    {profile?.question
+      ?.slice(0, profile.question.findIndex((q) => q.includes("!!"))) // Questions before "!!"
+      .map((question, index) => (
+        <React.Fragment key={index}>
+          <a
+            href={`#${question.toLowerCase()}`}
+            onClick={(e) => handleQuestionClick(index, e)}
+            onMouseEnter={(e) => handleMouseEnter(index, e)}
+            onMouseLeave={handleMouseLeave}
+            className="text-black text-2xl font-medium underline"
+          >
+            Q{index + 1}
+          </a>
+          {index <
+            profile.question.findIndex((q) => q.includes("!!")) - 1 && (
+            <span className="text-black text-xl">|</span>
+          )}
+        </React.Fragment>
+      ))}
+  </div>
+  <div className="flex flex-wrap justify-center space-x-4">
+    {profile?.question
+      ?.slice(profile.question.findIndex((q) => q.includes("!!")) + 1) // Questions after "!!"
+      .map((question, index) => (
+        <React.Fragment key={index}>
+          <a
+            href={`#${question.toLowerCase()}`}
+            onClick={(e) => handleQuestionClick(index, e)}
+            onMouseEnter={(e) => handleMouseEnter(index, e)}
+            onMouseLeave={handleMouseLeave}
+            className="text-black text-2xl font-medium underline"
+          >
+            Q{index + 1 + profile.question.findIndex((q) => q.includes("!!"))}
+          </a>
+          {index <
+            profile.question.length -
+              profile.question.findIndex((q) => q.includes("!!")) -
+              2 && <span className="text-black text-xl">|</span>}
+        </React.Fragment>
+      ))}
+  </div>
 </div>
 
                         {hoveredQuestion && (
@@ -160,7 +216,7 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Drop shadow effect
     }}
   >
-    {hoveredQuestion}
+     {formatTooltipText(hoveredQuestion)}
   </div>
 )}
 
@@ -191,12 +247,13 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
 
     <div className="w-1/2 min-h-[300px] bg-[#002F40] p-8 flex items-center justify-center">
     <ReactPlayer
-    url={profile?.videoLinks?.[1] || ""}
+    url={profile?.videoLinks?.[1] || ""} // Access videoLinks[1] for embedded YouTube link
     className="react-player"
     width="90%"
     height="95%"
     controls
-/>
+    playing // Automatically play the video when the component renders
+  />
        
     </div>
 </div>
