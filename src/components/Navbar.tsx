@@ -4,8 +4,12 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [isExploreDropdownOpen, setIsExploreDropdownOpen] = useState(false);
+    const [isResourcesDropdownOpen, setIsResourcesDropdownOpen] = useState(false);
+
     const [isBuildDropdownOpen, setIsBuildDropdownOpen] = useState(false);
     const [exploreTimeout, setExploreTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
+    const [ResourcesTimeout, setResourcesTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
+
     const [buildTimeout, setBuildTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
 
     const toggleMenu = () => setIsOpen(!isOpen);
@@ -19,7 +23,7 @@ export default function Navbar() {
         if (exploreTimeout) clearTimeout(exploreTimeout); // Clear any previous timeout
         const timeout = setTimeout(() => {
             setIsExploreDropdownOpen(false);
-        }, 500); // Delay for 0.5 seconds after mouse leaves
+        }, 200); // Delay for 0.5 seconds after mouse leaves
         setExploreTimeout(timeout);
     };
 
@@ -32,8 +36,20 @@ export default function Navbar() {
         if (buildTimeout) clearTimeout(buildTimeout); // Clear any previous timeout
         const timeout = setTimeout(() => {
             setIsBuildDropdownOpen(false);
-        }, 500); // Delay for 0.5 seconds after mouse leaves
+        }, 200); // Delay for 0.5 seconds after mouse leaves
         setBuildTimeout(timeout);
+    };
+    const openResourcesDropdown = () => {
+        if (ResourcesTimeout) clearTimeout(ResourcesTimeout); // Clear any previous timeout
+        setIsResourcesDropdownOpen(true);
+    };
+
+    const closeResourcesDropdown = () => {
+        if (buildTimeout) clearTimeout(buildTimeout); // Clear any previous timeout
+        const timeout = setTimeout(() => {
+            setIsResourcesDropdownOpen(false);
+        }, 200); // Delay for 0.5 seconds after mouse leaves
+        setResourcesTimeout(timeout);
     };
 
     return (
@@ -90,7 +106,24 @@ export default function Navbar() {
                     </span>
 
                     {/* Static Navbar Items */}
-                    <span className="nav-item-home relative cursor-pointer">Resources</span>
+                    <span
+                        className="nav-item-home cursor-pointer relative"
+                        onMouseEnter={openResourcesDropdown}
+                        onMouseLeave={closeResourcesDropdown}
+                    >
+                        Resources
+                        {isResourcesDropdownOpen && (
+                            <div className="absolute left-0 top-full mt-2 bg-white shadow-md rounded-md w-[200px]">
+                                <ul className="flex flex-col text-left">
+                                    <li><Link to="/Resource/UPSC" className="block px-4 py-2 hover:bg-gray-100">UPSC</Link></li>
+                                    <li><Link to="/Resource/CAT" className="block px-4 py-2 hover:bg-gray-100">CAT</Link></li>
+                                    <li><Link to="/Resource/Higher_Studies" className="block px-4 py-2 hover:bg-gray-100">Higher Studies</Link></li>
+                                                                   
+                                    
+                                </ul>
+                            </div>
+                        )}
+                    </span>
                     <span className="cursor-pointer border-[2px] border-[#133748] py-[6px] px-4 rounded-full hover:bg-[#133748] hover:text-white">
                         <a href="https://bsw.iitd.ac.in/counselling.php">Counselling</a>
                     </span>
@@ -112,7 +145,7 @@ export default function Navbar() {
                     <div className="flex flex-col px-2 py-4 gap-4">
                         <span className="cursor-pointer">Explore</span>
                         <span className="cursor-pointer">Build</span>
-                        <span className="cursor-pointer">Prepare</span>
+                        <span className="cursor-pointer">Resources</span>
                         <span className="cursor-pointer border-[2px] border-[#133748] py-[6px] px-4 rounded-full hover:bg-[#133748] hover:text-white">
                             Counselling
                         </span>
