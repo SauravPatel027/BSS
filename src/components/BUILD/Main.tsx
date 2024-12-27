@@ -140,8 +140,8 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
                  
                 <div className="flex w-full bg-[#FFFFFF] mt-12">
                 
-    <div className="w-1/2 min-h-[300px] bg-[#002F40] p-8 flex items-center justify-center">
-    <ReactPlayer key={playerKey}  url={playingURL}  className="react-player" light = {true} width="90%" height="95%" controls  
+    <div className="w-1/2 min-h-[300px] bg-[#002F40] p-12 flex items-center justify-center">
+    <ReactPlayer key={playerKey}  url={playingURL}  className="react-player" light = {true} width="100%" height="100%" controls  
     ref={playerRef}/>    </div>
     <div className="w-1/2 flex flex-col items-center justify-center p-8 bg-[#FFFFFF]">
                         <h1 className="text-6xl font-bold text-center text-black mb-5" style={{ fontFamily: "Cormorant Infant, serif", fontWeight: "700" }}>FAQs</h1>
@@ -245,14 +245,14 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
     </p>
 </div>
 
-    <div className="w-1/2 min-h-[300px] bg-[#002F40] p-8 flex items-center justify-center">
+    <div className="w-1/2 min-h-[300px] bg-[#002F40] p-12 flex items-center justify-center">
     <ReactPlayer
     url={profile?.videoLinks?.[1] || ""} // Access videoLinks[1] for embedded YouTube link
     className="react-player"
-    width="90%"
-    height="95%"
+    width="100%"
+    height="100%"
     controls
-    playing // Automatically play the video when the component renders
+     // Automatically play the video when the component renders
   />
        
     </div>
