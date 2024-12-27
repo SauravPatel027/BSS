@@ -4,7 +4,9 @@ import profileData from "../../assets/profiles.json";
 
 export default function Explore() {
     let listItems = Object.keys(profileData);
-    const [currentImg, setCurrentImg] = useState<number>(Math.floor(Math.random()*6));
+    const [currentImg, setCurrentImg] = useState<number>(
+        Math.floor(Math.random() * 6)
+    );
 
     return (
         <div className="w-full h-auto overflow-hidden pt-[2vh] pb-[5vh]" id="explore">
@@ -27,16 +29,34 @@ export default function Explore() {
                         </button>
                         <div
                             id="carousel"
-                            className="md:w-[500px] w-screen h-[200px] md:h-[250px] bg-black overflow-hidden object-cover"
+                            className="md:w-[500px] w-screen bg-black overflow-hidden"
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
                         >
-                            <Link to={`/explore/${listItems[currentImg % listItems.length]}`} onClick={() => window.scrollTo(0, 0)}>
+                            <Link
+                                to={`/explore/${listItems[currentImg % listItems.length]}`}
+                                onClick={() => window.scrollTo(0, 0)}
+                            >
                                 <img
-                                    src={profileData[listItems[currentImg % listItems.length] as keyof typeof profileData].cover_image}
+                                    src={
+                                        profileData[
+                                            listItems[
+                                                currentImg % listItems.length
+                                            ] as keyof typeof profileData
+                                        ].cover_image
+                                    }
                                     alt="Image"
-                                    className="w-full object-contain h-full object-center"
+                                    className="max-w-full max-h-full"
+                                    style={{
+                                        display: "block",
+                                        height: "auto",
+                                        width: "auto",
+                                    }}
                                 />
                             </Link>
-                            ;
                         </div>
                         <button
                             className="p-2 md:relative absolute right-0 md:invert-0 invert bg-black/10 md:bg-transparent"
@@ -62,12 +82,17 @@ export default function Explore() {
                                 >
                                     <span
                                         className={`${
-                                            currentImg % listItems.length === index
+                                            currentImg % listItems.length ===
+                                            index
                                                 ? "font-bold"
                                                 : ""
                                         }`}
                                     >
-                                        {profileData[item as keyof typeof profileData].name}
+                                        {removeExclamations(
+                                            profileData[
+                                                item as keyof typeof profileData
+                                            ].name
+                                        )}
                                     </span>
                                     <span className="w-full transition-all duration-250 left-[-100%] absolute h-[2px]  bottom-[-3px] bg-black"></span>
                                 </span>
@@ -77,15 +102,29 @@ export default function Explore() {
                 </div>
 
                 <div className="w-full bg-black h-1 my-10 mt-5 md:hidden"></div>
-                <div className=" flex flex-col gap-[2px] text-center justify-center items-start">
-                    <h1 className="font-bold text-3xl">Explore {profileData[listItems[currentImg % listItems.length] as keyof typeof profileData].name}</h1>
+                <div className="flex flex-col gap-[2px] text-center justify-center items-start">
+                    <h1 className="font-bold text-3xl">
+                        Explore{" "}
+                        {removeExclamations(
+                            profileData[
+                                listItems[
+                                    currentImg % listItems.length
+                                ] as keyof typeof profileData
+                            ].name
+                        )}
+                    </h1>
                     <p className="md:max-w-[40ch] text-left">
                         Explore different streams, verified statistics, exciting
                         opportunities and much more
                     </p>
                     <div className="h-2"></div>
                     <button className="border-solid border-[2px] border-[#133748] py-[4px] px-2 hover:bg-[#133748] hover:text-white select-none">
-                        <Link to={`/explore/${listItems[currentImg % listItems.length]}`} onClick={() => window.scrollTo(0, 0)}>
+                        <Link
+                            to={`/explore/${
+                                listItems[currentImg % listItems.length]
+                            }`}
+                            onClick={() => window.scrollTo(0, 0)}
+                        >
                             Read More
                         </Link>
                     </button>
@@ -93,6 +132,10 @@ export default function Explore() {
             </div>
         </div>
     );
+}
+
+function removeExclamations(name: string): string {
+    return name.replace(/!!/g, "");
 }
 
 function LeftButton() {
@@ -123,6 +166,7 @@ function LeftButton() {
         </svg>
     );
 }
+
 function RightButton() {
     return (
         <svg
