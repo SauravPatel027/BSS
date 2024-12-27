@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import profileData from "../../assets/profiles.json";
 
 export default function Explore() {
-    let listItems = Object.keys(profileData);
+    let listItems = Object.keys(profileData).slice(0, 6); // Limit to first 6 items
     const [currentImg, setCurrentImg] = useState<number>(
         Math.floor(Math.random() * 6)
     );
