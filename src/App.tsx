@@ -3,6 +3,7 @@ import ScrollToTop from './components/ScrollToTop';
 import Landing from "./pages/Landing";
 import ExplorePage from "./pages/Explore";
 import BuildPage from "./pages/BUILD"; // Placeholder for build pages
+import ResourcePage from "./pages/Resource"; 
 
 export default function App() {
   return (
@@ -17,6 +18,8 @@ export default function App() {
         
         {/* Build Folder Pages */}
         <Route path="/build/:profileName" element={<BuildPage />} />
+        <Route path="/Resource/:profileName" element={<ResourcePage />} />
+        
       </Routes>
     </Router>
   );
