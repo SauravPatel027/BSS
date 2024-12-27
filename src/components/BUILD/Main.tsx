@@ -245,7 +245,7 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
     </p>
 </div>
 
-    <div className="w-1/2 min-h-[300px] bg-[#002F40] p-12 flex items-center justify-center">
+    <div className="w-1/2 min-h-[370px] bg-[#002F40] p-12 flex items-center justify-center">
     <ReactPlayer
     url={profile?.videoLinks?.[1] || ""} // Access videoLinks[1] for embedded YouTube link
     className="react-player"
