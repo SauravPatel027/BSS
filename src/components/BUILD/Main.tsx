@@ -140,7 +140,7 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
                  
                 <div className="flex w-full bg-[#FFFFFF] mt-12">
                 
-    <div className="w-1/2 min-h-[300px] bg-[#002F40] p-12 flex items-center justify-center">
+< div className="w-1/2  bg-[#002F40] flex items-center justify-center relative" style={{ padding: '8vh', aspectRatio: '1.7' }}>
     <ReactPlayer key={playerKey}  url={playingURL}  className="react-player" light = {true} width="100%" height="100%" controls  
     ref={playerRef}/>    </div>
     <div className="w-1/2 flex flex-col items-center justify-center p-8 bg-[#FFFFFF]">
@@ -245,7 +245,7 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
     </p>
 </div>
 
-    <div className="w-1/2 min-h-[370px] bg-[#002F40] p-12 flex items-center justify-center">
+< div className="w-1/2  bg-[#002F40] flex items-center justify-center relative" style={{ padding: '8vh', aspectRatio: '1.7' }}>
     <ReactPlayer
     url={profile?.videoLinks?.[1] || ""} // Access videoLinks[1] for embedded YouTube link
     className="react-player"
