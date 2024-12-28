@@ -45,7 +45,7 @@ export default function Navbar() {
     };
 
     const closeResourcesDropdown = () => {
-        if (buildTimeout) clearTimeout(buildTimeout); // Clear any previous timeout
+        if (ResourceTimeout) clearTimeout(ResourceTimeout); // Clear any previous timeout
         const timeout = setTimeout(() => {
             setIsResourcesDropdownOpen(false);
         }, 200); // Delay for 0.5 seconds after mouse leaves
