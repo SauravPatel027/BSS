@@ -37,11 +37,12 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
     const handleMouseEnter = (index: number, event: React.MouseEvent) => {
       setHoveredQuestion(profile?.questions?.[index] || "");
       
-    
+          const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+
       // Positioning the tooltip dynamically
       setTooltipPosition({
-        x: event.clientX, // Use viewport-relative coordinates
-        y: event.clientY - 20, // Position above the cursor (20px offset)
+        x: rect.left + rect.right /2, // Use viewport-relative coordinates
+        y: rect.top - 10, // Position above the cursor (20px offset)
       });
     };
     const handleMouseLeave = () => {
