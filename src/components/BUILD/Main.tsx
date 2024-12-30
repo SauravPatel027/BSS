@@ -41,7 +41,7 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
 
       // Positioning the tooltip dynamically
       setTooltipPosition({
-        x: rect.left + rect.right /2, // Use viewport-relative coordinates
+        x: rect.left + rect.width /2, // Use viewport-relative coordinates
         y: rect.top - 10, // Position above the cursor (20px offset)
       });
     };
