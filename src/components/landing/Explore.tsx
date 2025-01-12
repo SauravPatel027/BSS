@@ -9,7 +9,7 @@ export default function Explore() {
     );
 
     return (
-        <div className="w-full h-auto overflow-hidden pt-[2vh] pb-[5vh]" id="explore">
+        <div className="w-full h-auto overflow-hidden pt-[3vh] pb-[3vh]" id="explore">
             <div className="w-full px-4  md:px-16 flex-col lg:flex-row flex justify-evenly items-center h-full ">
                 <div
                     id="carousel-box"
