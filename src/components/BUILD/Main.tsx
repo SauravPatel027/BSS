@@ -101,7 +101,7 @@ const TimelinePage = ({ profileName }: { profileName: string | undefined }) => {
             <div className="flex-grow" >  
                
                 <div className="w-full py-2 flex flex-col items-center relative">  
-                    <h1 className="text-3xl md:text-5xl font-bold text-center mb-8 mt-0" style={{ fontFamily: "Cormorant infant, serif", color: "#002F40", fontWeight: 500 }}>Timeline</h1>  
+                    <h1 className="text-3xl md:text-5xl font-bold text-center mb-8 mt-0" style={{ fontFamily: "Cormorant infant, serif", color: "#002F40", fontWeight: 500 ,position : "relative", left : "-2.5vw" }}>Timeline</h1>  
 
                    
                     <div className="relative w-full min-h-[400px]">  
@@ -285,7 +285,7 @@ const Arrow: React.FC<ArrowProps> = ({ x, y, direction, label }) => {
     const arrowLength = 40;
   
     // Split label into heading and body
-    const splitLabel = label.split(/(?<=\.)\s/); // Split at the first sentence ending
+    const splitLabel = label.split(/\s{4}/); // Split at the first sentence ending
     const heading = splitLabel[0]; // First part is the heading
     const body = splitLabel.slice(1).join(" "); // Remaining text is the body
   
