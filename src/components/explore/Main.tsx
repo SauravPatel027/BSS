@@ -40,7 +40,7 @@ export default function Main({ profileName }: { profileName: string|undefined })
 function FAQs({ profile }: { profile: typeof profileData[keyof typeof profileData] }) {
     const faqItems = [
         { question: "What is the expected payscale?", answer: profile.payscale },
-        { question: "What are the eligible branches?", answer: profile.branches },
+        { question: "What are the preferreed branches?", answer: profile.branches },
         { question: "What are the required skills?", answer: profile.skills },
         { question: "What is the general future trajectory?", answer: profile.trajectory },
         { question: "What are the most important resume highlights?", answer: profile.resume },
