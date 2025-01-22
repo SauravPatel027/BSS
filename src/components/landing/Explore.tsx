@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import profileData from "../../assets/profiles.json";
 
@@ -7,7 +7,12 @@ export default function Explore() {
     const [currentImg, setCurrentImg] = useState<number>(
         Math.floor(Math.random() * 6)
     );
-
+useEffect(() => {
+        listItems.forEach((item) => {
+            const img = new Image();
+            img.src = profileData[item as keyof typeof profileData].cover_image;
+        });
+    }, []);
     return (
         <div className="w-full h-auto overflow-hidden pt-[6vh] pb-[6vh]" id="explore">
             <div className="w-full px-4  md:px-16 flex-col lg:flex-row flex justify-evenly items-center h-full ">
