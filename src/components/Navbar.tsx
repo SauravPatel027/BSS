@@ -106,24 +106,23 @@ export default function Navbar() {
                     </span>
 
                     {/* Static Navbar Items */}
-                    <span
-                        className="nav-item-home cursor-pointer relative"
-                        onMouseEnter={openResourcesDropdown}
-                        onMouseLeave={closeResourcesDropdown}
-                    >
-                        Resources
-                        {isResourcesDropdownOpen && (
-                            <div className="absolute left-0 top-full mt-2 bg-white shadow-md rounded-md w-[200px]">
-                                <ul className="flex flex-col text-left">
-                                    <li><Link to="/Resource/UPSC" className="block px-4 py-2 hover:bg-gray-100">UPSC</Link></li>
-                                    <li><Link to="/Resource/CAT" className="block px-4 py-2 hover:bg-gray-100">CAT</Link></li>
-                                    <li><Link to="/Resource/Higher_Studies" className="block px-4 py-2 hover:bg-gray-100">Higher Studies</Link></li>
-                                                                   
-                                    
-                                </ul>
-                            </div>
-                        )}
-                    </span>
+                     {/* Resources Dropdown */}
+<span
+    className="nav-item-home cursor-pointer relative"
+    onMouseEnter={openResourcesDropdown}
+    onMouseLeave={closeResourcesDropdown}
+>
+    Resources
+    {isResourcesDropdownOpen && (
+        <div className="absolute right-0 top-full mt-2 bg-white shadow-md rounded-md min-w-[165px] translate-x-[20%]">
+            <ul className="flex flex-col text-left pl-3 pr-4">
+                <li><Link to="/Resource/UPSC" className="block py-2 hover:bg-gray-100 whitespace-nowrap">UPSC</Link></li>
+                <li><Link to="/Resource/CAT" className="block py-2 hover:bg-gray-100 whitespace-nowrap">CAT</Link></li>
+                <li><Link to="/Resource/Higher_Studies" className="block py-2 hover:bg-gray-100 whitespace-nowrap">Higher Studies</Link></li>
+            </ul>
+        </div>
+    )}
+</span>
                     
                 </div>
 
