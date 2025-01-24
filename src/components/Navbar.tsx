@@ -124,9 +124,7 @@ export default function Navbar() {
                             </div>
                         )}
                     </span>
-                    <span className="cursor-pointer border-[2px] border-[#133748] py-[6px] px-4 rounded-full hover:bg-[#133748] hover:text-white">
-                        <a href="https://bsw.iitd.ac.in/counselling.php">Counselling</a>
-                    </span>
+                    
                 </div>
 
                 {/* Mobile Menu Toggle */}
@@ -146,9 +144,7 @@ export default function Navbar() {
                         <span className="cursor-pointer">Explore</span>
                         <span className="cursor-pointer">Build</span>
                         <span className="cursor-pointer">Resources</span>
-                        <span className="cursor-pointer border-[2px] border-[#133748] py-[6px] px-4 rounded-full hover:bg-[#133748] hover:text-white">
-                            Counselling
-                        </span>
+                       
                     </div>
                 </div>
             )}
